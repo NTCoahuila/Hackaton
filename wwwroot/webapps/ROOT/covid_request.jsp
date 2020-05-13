@@ -41,8 +41,6 @@ var map;
 function GetMap() {
             //Initialize a map instance.
             map = new atlas.Map('myMap', {
-                center: [-102, 23],
-                zoom : 4,
                 view: 'Auto',
 				//Add your Azure Maps subscription key to the map SDK. Get an Azure Maps key at https://azure.com/maps
                 authOptions: {
@@ -65,12 +63,11 @@ function GetMap() {
 			position: "top-right"
 		});
 
-	addlocation(-100,26,"Covid Area1");
-        addlocation(-100.34,23,"Covid Area2");
-	//addlocation(10,0,"Covid Area2");
-	addlocation(-101.23,24,"Covid Area3");
-	addlocation(10,10,"Covid Area4");
-	addlocation(20,30,"Covid Area5");
+	addlocation(-40,0,"<b>Food</B> <br>Pizza -2");
+	addlocation(-10,0,"<b>Groceries</B> <br>Polo and French Fries");
+	addlocation(0,40,"<b>Medical</B> <br>Need N95 mask");
+	addlocation(10,60,"<b>Others</B> <br>Need Car pooling from saltilo to Hexaware office");
+	addlocation(-100,25,"<b>Others</B> <br>Need Gasoline");
 
  	});
 }
@@ -80,7 +77,7 @@ function addlocation(xlat,ylng,zTextContent) {
 
   //Create a HTML marker and add it to the map.
   var marker = new atlas.HtmlMarker({
-    color: 'Red',
+    color: 'Green',
     text: '+',
     position: [xlat,ylng],
     popup: new atlas.Popup({

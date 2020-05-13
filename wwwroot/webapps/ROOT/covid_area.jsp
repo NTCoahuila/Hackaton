@@ -1,3 +1,20 @@
+<%@page import="java.sql.*"%>
+<%@page import="java.util.*"%>
+<%
+
+String dburl="jdbc:mysql://ntcoahuila-db.mysql.database.azure.com:3306/mysql_ntcoahuila_db?useSSL=true&requireSSL=false";
+String dbusername="NTCoahuila@ntcoahuila-db"; 
+String dbpassword="Covid19Hackaton";
+
+int impact_area_count=0;
+int hospital_count=0;
+int request_count=0;
+
+Connection con;
+PreparedStatement pstmt;
+ResultSet rs;
+
+%>
 <html>
 <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css" />
 <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
@@ -21,15 +38,7 @@ body {
 <body onload='GetMap()'>
 <table width=100% border = 1>
 <tr><td>
-<table width=100%>
-<tr><td><a href="https://ntcoahuila.azurewebsites.net">Logo</a></td>
-<td width=300 align=right><a href="register.html">Register</a><a href="login.html">Login</a><br>
-<a href="myimpactedarea.html">MyArea</a>
-<a href="myhospital.html">MyHospital</a>
-<a href="myrequest.html">MyRequest</a>
-<a href="signout.html">Signout</a>
-</td></tr>
-</table>
+<jsp:include page="header.jsp" />  
 </td></tr>
 </table>
   <div id="myMap" ></div>
@@ -65,12 +74,23 @@ function GetMap() {
 			position: "top-right"
 		});
 
-	addlocation(-100,26,"Covid Area1");
-        addlocation(-100.34,23,"Covid Area2");
-	//addlocation(10,0,"Covid Area2");
-	addlocation(-101.23,24,"Covid Area3");
-	addlocation(10,10,"Covid Area4");
-	addlocation(20,30,"Covid Area5");
+<%
+
+try {
+	Class.forName("com.mysql.jdbc.Driver"); 
+	con=DriverManager.getConnection(dburl,dbusername,dbpassword);
+	pstmt=null;
+	pstmt=con.prepareStatement("SELECT * FROM ntcoahulia_impacted_area");            
+	rs=pstmt.executeQuery();
+	while (rs.next()) {
+	out.print("addlocation(" + rs.getString("xlat") + "," + rs.getString("ylng")+ ",'Added on " + rs.getDate("create_ts")+ "');");
+	} 
+        con.close(); 
+} catch(Exception e) {
+      out.print(e.toString()); 
+} 
+%>
+
 
  	});
 }
@@ -100,7 +120,6 @@ map.events.add('click',marker, () => {
 
 }
 </script>
-
 
 
 </html>

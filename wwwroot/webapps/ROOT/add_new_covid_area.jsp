@@ -1,3 +1,20 @@
+<%@page import="java.sql.*"%>
+<%@page import="java.util.*"%>
+<%
+
+String dburl="jdbc:mysql://ntcoahuila-db.mysql.database.azure.com:3306/mysql_ntcoahuila_db?useSSL=true&requireSSL=false";
+String dbusername="NTCoahuila@ntcoahuila-db"; 
+String dbpassword="Covid19Hackaton";
+
+int impact_area_count=0;
+int hospital_count=0;
+int request_count=0;
+
+Connection con;
+PreparedStatement pstmt;
+ResultSet rs;
+
+%>
 <html>
 <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css" />
 <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
@@ -12,26 +29,35 @@ body {
 
 #myMap {
   position: relative;
-  width: 100%;
+  width: calc(100% - 375px);
   height: 100%;
-  float: left;
+  float: right;
 }
+
+.sidePanel {
+   width: 325px;
+   height: 580px;
+   float: left;
+}
+
 </style>
 
 <body onload='GetMap()'>
 <table width=100% border = 1>
 <tr><td>
-<table width=100%>
-<tr><td><a href="https://ntcoahuila.azurewebsites.net">Logo</a></td>
-<td width=300 align=right><a href="register.html">Register</a><a href="login.html">Login</a><br>
-<a href="myimpactedarea.html">MyArea</a>
-<a href="myhospital.html">MyHospital</a>
-<a href="myrequest.html">MyRequest</a>
-<a href="signout.html">Signout</a>
+<jsp:include page="header.jsp" />  
 </td></tr>
 </table>
-</td></tr>
-</table>
+  <div class="sidePanel">
+	<form name="impactedarea" action="jsp/impacted_area_add.jsp" method="POST">
+	<table width=100% style="margin-right:20px;">
+	<tr><th>Mark New Impacted area</th> </tr>
+	<tr><td>Latitude</td></tr><tr><td><input type=text name="xlat" id="xlat" required size=55></td></tr>
+	<tr><td>Longtidue</td></tr><tr><td><input type=text name="ylng" id="ylng" required size=55></td></tr>
+	<tr><td align=right> <br><input type=submit value ="Save">
+	</table>
+	</form>
+  </div>
   <div id="myMap" ></div>
 </body>
 
@@ -41,9 +67,9 @@ var map;
 function GetMap() {
             //Initialize a map instance.
             map = new atlas.Map('myMap', {
-                center: [-102, 23],
-                zoom : 4,
-                view: 'Auto',
+                center:[-101.00524, 25.42237],
+		zoom:10,
+		view: 'Auto',
 				//Add your Azure Maps subscription key to the map SDK. Get an Azure Maps key at https://azure.com/maps
                 authOptions: {
                     authType: 'subscriptionKey',
@@ -65,36 +91,30 @@ function GetMap() {
 			position: "top-right"
 		});
 
-	addlocation(-100,26,"Covid Area1");
-        addlocation(-100.34,23,"Covid Area2");
-	//addlocation(10,0,"Covid Area2");
-	addlocation(-101.23,24,"Covid Area3");
-	addlocation(10,10,"Covid Area4");
-	addlocation(20,30,"Covid Area5");
+	addlocation(-101.00524, 25.42237);
 
  	});
 }
 
 
-function addlocation(xlat,ylng,zTextContent) {
+function addlocation(xlat,ylng) {
 
   //Create a HTML marker and add it to the map.
   var marker = new atlas.HtmlMarker({
     color: 'Red',
     text: '+',
     position: [xlat,ylng],
-    popup: new atlas.Popup({
-        content: '<div style="padding:10px">' + zTextContent + '</div>',
-        pixelOffset: [0, -40]
-    })
+    draggable:true,
   });
   
   map.markers.add(marker);
 
 
 //Add a click event to toggle the popup.
-map.events.add('click',marker, () => {
-    marker.togglePopup();
+map.events.add('dragend',marker, () => {
+        var pos = marker.getOptions().position;
+document.getElementById("xlat").value=pos[0];
+document.getElementById("ylng").value=pos[1];
 });
      
 

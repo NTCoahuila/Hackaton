@@ -12,10 +12,17 @@ body {
 
 #myMap {
   position: relative;
-  width: 100%;
+  width: calc(100% - 375px);
   height: 100%;
-  float: left;
+  float: right;
 }
+
+.sidePanel {
+   width: 325px;
+   height: 580px;
+   float: left;
+}
+
 </style>
 
 <body onload='GetMap()'>
@@ -32,6 +39,26 @@ body {
 </table>
 </td></tr>
 </table>
+  <div class="sidePanel">
+	<table width=100% style="margin-right:20px;">
+	<tr><th>Add New Request</th></tr>
+	<tr><td>Request Type</td></tr><tr><td>
+		<select style="width:350px;">
+			<option value="Select">Select</option>
+			<option value="Food">Food</option>
+			<option value="Medical">Medical</option>
+			<option value="Groceries">Groceries</option>
+			<option value="Other">Other</option>
+		</select>
+        </td> </tr>
+	<tr><td>Request</td></tr><tr><td><textarea cols=45 rows=6></textarea></td></tr>
+	<tr><td>Name</td></tr><tr><td><input type=text  size=55></td></tr>
+	<tr><td>Telephone</td></tr><tr><td><input type=text  size=55></td></tr>
+	<tr><td>Latitude</td></tr><tr><td><input type=text id=xlat size=55></td></tr>
+	<tr><td>Longtidue</td></tr><tr><td><input type=text id=ylng size=55></td></tr>
+	<tr><td align=right> <br><input type=submit value ="Register"> <input type =reset value="cancel"></td> </tr>
+	</table>
+  </div>
   <div id="myMap" ></div>
 </body>
 
@@ -41,9 +68,9 @@ var map;
 function GetMap() {
             //Initialize a map instance.
             map = new atlas.Map('myMap', {
-                center: [-102, 23],
-                zoom : 4,
-                view: 'Auto',
+                center:[-101.00524, 25.42237],
+		zoom:10,
+		view: 'Auto',
 				//Add your Azure Maps subscription key to the map SDK. Get an Azure Maps key at https://azure.com/maps
                 authOptions: {
                     authType: 'subscriptionKey',
@@ -65,36 +92,30 @@ function GetMap() {
 			position: "top-right"
 		});
 
-	addlocation(-100,26,"Covid Area1");
-        addlocation(-100.34,23,"Covid Area2");
-	//addlocation(10,0,"Covid Area2");
-	addlocation(-101.23,24,"Covid Area3");
-	addlocation(10,10,"Covid Area4");
-	addlocation(20,30,"Covid Area5");
+	addlocation(-101.00524, 25.42237);
 
  	});
 }
 
 
-function addlocation(xlat,ylng,zTextContent) {
+function addlocation(xlat,ylng) {
 
   //Create a HTML marker and add it to the map.
   var marker = new atlas.HtmlMarker({
-    color: 'Red',
+    color: 'Green',
     text: '+',
     position: [xlat,ylng],
-    popup: new atlas.Popup({
-        content: '<div style="padding:10px">' + zTextContent + '</div>',
-        pixelOffset: [0, -40]
-    })
+    draggable:true,
   });
   
   map.markers.add(marker);
 
 
 //Add a click event to toggle the popup.
-map.events.add('click',marker, () => {
-    marker.togglePopup();
+map.events.add('dragend',marker, () => {
+        var pos = marker.getOptions().position;
+document.getElementById("xlat").value=pos[0];
+document.getElementById("ylng").value=pos[1];
 });
      
 
