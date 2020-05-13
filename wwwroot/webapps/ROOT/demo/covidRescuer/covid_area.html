@@ -1,0 +1,138 @@
+<html>
+<link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css" />
+<script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Covid Rescuer</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="stylesheet" href="css/main.css">
+
+
+<style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    #myMap {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        float: left;
+    }
+</style>
+
+<body onload='GetMap()'>
+    <header>
+        <div class="container">
+            <a class="back" href="https://ntcoahuila.azurewebsites.net">
+                <img src="img/back-icon.svg">
+            </a>
+            <a class="logo" href="https://ntcoahuila.azurewebsites.net">
+                <img src="img/covidRescuerLogo.svg">
+            </a>
+            <div class="right-menu">
+                <div class="group-btn">
+                    <a class="btn00" href="login.html">
+                        Login
+                    </a>
+                    <a class="linked-text" href="register.html">
+                        or Register
+                    </a>
+                </div>
+
+                <a class="btn00 graybtn" href="signout.html" style="display: none;">
+                    Sing out
+                </a>
+
+            </div>
+        </div>
+
+        <ul class="menu">
+            <li>
+                <a href="myimpactedarea.html">My area</a>
+            </li>
+            <li>
+                <a href="myhospital.html">My Hospital</a>
+            </li>
+            <li>
+                <a href="myrequest.html">My Request</a>
+            </li>
+        </ul>
+
+    </header>
+    <div id="myMap"></div>
+</body>
+
+
+<script type='text/javascript'>
+    var map;
+
+    function GetMap() {
+        //Initialize a map instance.
+        map = new atlas.Map('myMap', {
+            view: 'Auto',
+            //Add your Azure Maps subscription key to the map SDK. Get an Azure Maps key at https://azure.com/maps
+            authOptions: {
+                authType: 'subscriptionKey',
+                subscriptionKey: 'w48YXU4iDSv6uC1R2IW-EmWGWYUCupsOtEe15Urwf5A'
+            }
+        });
+
+
+        //Wait until the map resources are ready.
+        map.events.add('ready', function () {
+
+            //add all map controls
+            map.controls.add([
+                new atlas.control.ZoomControl(),
+                new atlas.control.CompassControl(),
+                new atlas.control.PitchControl(),
+                new atlas.control.StyleControl()
+            ], {
+                position: "top-right"
+            });
+
+            addlocation(0, 0, "Covid Area1");
+            addlocation(10, 0, "Covid Area2");
+            addlocation(0, 10, "Covid Area3");
+            addlocation(10, 10, "Covid Area4");
+            addlocation(20, 30, "Covid Area5");
+
+        });
+    }
+
+
+    function addlocation(xlat, ylng, zTextContent) {
+
+        //Create a HTML marker and add it to the map.
+        var marker = new atlas.HtmlMarker({
+            color: 'Red',
+            text: '+',
+            position: [xlat, ylng],
+            popup: new atlas.Popup({
+                content: '<div style="padding:10px">' + zTextContent + '</div>',
+                pixelOffset: [0, -40]
+            })
+        });
+
+        map.markers.add(marker);
+
+
+        //Add a click event to toggle the popup.
+        map.events.add('click', marker, () => {
+            marker.togglePopup();
+        });
+
+
+    }
+</script>
+
+
+
+</html>

@@ -1,0 +1,185 @@
+<html>
+<link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css" />
+<script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+<style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    #myMap {
+        position: relative;
+        width: 75%;
+        height: 100%;
+        float: right;
+    }
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Covid Rescuer</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body onload='GetMap()'>
+    <header>
+        <div class="container">
+            <a class="back" href="#">
+                <img src="img/back-icon.svg">
+            </a>
+            <a class="logo" href="https://ntcoahuila.azurewebsites.net">
+                <img src="img/covidRescuerLogo.svg">
+            </a>
+            <div class="right-menu">
+                <div class="group-btn">
+                    <a class="btn00" href="login.html">
+                        Login
+                    </a>
+                    <a class="linked-text" href="register.html">
+                        or Register
+                    </a>
+                </div>
+
+                <a class="btn00 graybtn" href="signout.html" style="display: none;">
+                    Sing out
+                </a>
+
+            </div>
+        </div>
+
+        <ul class="menu">
+            <li>
+                <a href="myimpactedarea.html">My area</a>
+            </li>
+            <li>
+                <a href="myhospital.html">My Hospital</a>
+            </li>
+            <li>
+                <a href="myrequest.html">My Request</a>
+            </li>
+        </ul>
+    </header>
+
+    <div class="sidePanel">
+
+        <h2>Add New Request</h2>
+        <form>
+            <div class="form-group">
+                <label>Request Type</label>
+                <select class="control">
+                    <option value="Select">Select</option>
+                    <option value="Food">Food</option>
+                    <option value="Medical">Medical</option>
+                    <option value="Groceries">Groceries</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Request</label>
+                <textarea cols=45 rows=6></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Name</label>
+                <input type=text size=55>
+            </div>
+
+            <div class="form-group">
+                <label>Telephone</label>
+                <input type=text size=55>
+            </div>
+
+            <div class="form-group">
+                <label>Latitude</label>
+                <input type=text id=xlat size=55>
+            </div>
+
+            <div class="form-group">
+                <label>Longtidue</label>
+                <input type=text id=ylng size=55>
+            </div>
+
+            <div class="right">
+                <input class="btn00 graybtn" type=reset value="Cancel">
+                <input class="btn00" type=submit value="Register">
+            </div>
+        </form>
+
+
+    </div>
+
+    <div id="myMap"></div>
+</body>
+
+
+<script type='text/javascript'>
+    var map;
+
+    function GetMap() {
+        //Initialize a map instance.
+        map = new atlas.Map('myMap', {
+            center: [-101.00524, 25.42237],
+            zoom: 10,
+            view: 'Auto',
+            //Add your Azure Maps subscription key to the map SDK. Get an Azure Maps key at https://azure.com/maps
+            authOptions: {
+                authType: 'subscriptionKey',
+                subscriptionKey: 'w48YXU4iDSv6uC1R2IW-EmWGWYUCupsOtEe15Urwf5A'
+            }
+        });
+
+
+        //Wait until the map resources are ready.
+        map.events.add('ready', function () {
+
+            //add all map controls
+            map.controls.add([
+                new atlas.control.ZoomControl(),
+                new atlas.control.CompassControl(),
+                new atlas.control.PitchControl(),
+                new atlas.control.StyleControl()
+            ], {
+                position: "top-right"
+            });
+
+            addlocation(-101.00524, 25.42237);
+
+        });
+    }
+
+
+    function addlocation(xlat, ylng) {
+
+        //Create a HTML marker and add it to the map.
+        var marker = new atlas.HtmlMarker({
+            color: 'Green',
+            text: '+',
+            position: [xlat, ylng],
+            draggable: true,
+        });
+
+        map.markers.add(marker);
+
+
+        //Add a click event to toggle the popup.
+        map.events.add('dragend', marker, () => {
+            var pos = marker.getOptions().position;
+            document.getElementById("xlat").value = pos[0];
+            document.getElementById("ylng").value = pos[1];
+        });
+
+
+    }
+</script>
+
+
+
+</html>

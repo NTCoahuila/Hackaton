@@ -1,0 +1,255 @@
+* {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    /* border: 1px solid green;*/
+    position: relative;
+}
+
+.right {
+    text-align: right;
+
+    .btn00 {
+        margin-left: 10px;
+    }
+}
+
+//BUTTONS
+
+.btn00 {
+    display: inline-block;
+    padding: 10px 30px;
+    background-color: #0392EA;
+    border: 1px solid #0392EA;
+    color: #FFFFFF;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    margin: 0;
+    font-size: 16px;
+}
+
+.btn00:hover {
+    background-color: #007FDD;
+}
+
+.graybtn {
+    background-color: #CCCCCC;
+    color: #333333;
+    margin-top: 10px;
+    border: 1px solid #CCCCCC;
+}
+
+.graybtn:hover {
+    background-color: #9c9c9c;
+}
+
+.group-btn {
+    /*display: none;*/
+}
+
+//BUTTONS
+
+//Header
+
+header {
+    border-bottom: 1px solid #A3A3A3;
+    padding: 10px 0;
+    text-align: center;
+    display: block;
+    width: 100%;
+    position: fixed;
+    z-index: 99;
+    background-color: #FFFFFF;
+    top: 0;
+
+
+    .back {
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        top: 8px;
+        //border: 1px solid red;
+
+        img {
+            width: 55px;
+        }
+    }
+
+    .logo {
+        width: 170px;
+        display: inline-block;
+        margin: 0 auto;
+        vertical-align: middle;
+
+    }
+
+    .menu {
+        display: inline-block;
+        display: none;
+        /*border: 1px solid red;*/
+        margin: 0 auto;
+        text-align: center;
+
+        li {
+            display: inline-block;
+            padding: 10px;
+            /*border: 1px solid blue;*/
+            margin: 10px;
+        }
+    }
+
+    .right-menu {
+        display: inline-block;
+        position: absolute;
+        vertical-align: middle;
+        text-align: right;
+        //border: 1px solid red;
+        right: 0;
+        top: 8px;
+
+        .linked-text {
+            color: #0392EA;
+            padding-top: 7px;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+    }
+}
+
+//Header
+
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 10px 0;
+
+    .item {
+        margin: 20px;
+        text-align: center;
+        width: 200px;
+
+        .btn00 {
+            padding: 15px 30px;
+        }
+    }
+
+    a {
+        text-decoration: none;
+
+        .circle {
+            margin: 0 auto 15px auto;
+            display: block;
+            background-color: #0392EA;
+            border-radius: 50%;
+            width: 185px;
+            height: 185px;
+
+            img {
+                margin-top: 20px;
+                width: 140px;
+            }
+
+        }
+
+        h2 {
+            font-weight: normal;
+            color: #333333;
+            font-size: 29px;
+            margin-bottom: 20px;
+        }
+    }
+}
+
+.tag {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: rgb(238, 238, 238);
+    padding: 8px 12px;
+    margin: 15px auto 0px auto;
+
+    color: #3A3A3A;
+}
+
+//SidePanel
+.sidePanel {
+    width: 25%;
+    display: block;
+    background-color: #FFFFFF;
+    float: left;
+    box-sizing: border-box;
+    padding: 15px;
+    margin-top: 96px;
+
+
+    h2 {
+        margin-bottom: 20px;
+    }
+}
+
+form {
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    input[type=text],
+    input[type=email],
+    .control,
+    input[type=password] {
+        width: 100%;
+        border: 1px solid #ced4da;
+        padding: 8px 5px;
+        border-radius: 3px;
+        margin-bottom: 5px;
+        font-size: 15px;
+    }
+
+    textarea {
+        width: 100%;
+        resize: none;
+        height: 60px;
+        padding: 5px;
+        border-radius: 3px;
+        border: 1px solid #D2D2D2;
+        box-sizing: border-box;
+        margin-bottom: 5px;
+    }
+
+    .control {
+        height: 35px;
+        margin-bottom: 8px;
+    }
+}
+
+
+
+.push {
+    margin-top: 120px;
+}
+
+.log-box {
+    display: block;
+    border: 1px solid #dcd8d8;
+    margin: 120px auto 0 auto;
+    padding: 30px;
+    border-radius: 3px;
+    position: relative;
+    float: none;
+    max-width: 520px;
+    background-color: #f9f9f9;
+
+    label {
+        margin-top: 10px;
+    }
+}

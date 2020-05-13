@@ -1,0 +1,119 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Covid Rescuer</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+</head>
+
+<body ng-app="postRegister" ng-controller="PostController as postCtrl">
+    <header>
+        <div class="container">
+            <a class="logo" href="https://ntcoahuila.azurewebsites.net">
+                <img src="img/covidRescuerLogo.svg">
+            </a>
+        </div>
+    </header>
+    <div class="container">
+        <div class="log-box">
+            <form name="register" ng-submit="postCtrl.postForm()" method="POST">
+                <div class="from-group">
+                    <label>User Name </label>
+                    <input type=Text name="username" id="inputUsername" ng-model="postCtrl.inputData.username" required>
+                    <span style="color:red" ng-show="register.username.$invalid">
+                        <span ng-show="register.username.$error.required">** Username is required.</span>
+                    </span>
+                </div>
+
+                <div class="from-group">
+                    <label>Password</label>
+                    <input type=password name="password" id="inputPassword" required
+                        ng-model="postCtrl.inputData.password"><br>
+                    <span style="color:red" ng-show="register.password.$invalid">
+                        <span ng-show="register.password.$error.required">** Password is required.</span>
+                    </span>
+                </div>
+
+                <label>Confirm Password</label>
+                <input type=password name="confirmpassword" id="inputPassword" compare-to="postCtrl.inputData.password"
+                    required ng-model="postCtrl.inputData.cpassword">
+                <span style="color:red" ng-show="register.confirmpassword.$invalid">
+                    <span ng-show="register.confirmpassword.$error.compareTo">** Password not
+                        matching.</span>
+                </span>
+
+                <label>Email Id</label>
+                <input type=email name="emailid" id="inputEmailId" required ng-model="postCtrl.inputData.emailid"><br>
+                <span style="color:red" ng-show="register.emailid.$invalid">
+                    <span ng-show="register.emailid.$error.required">** EmailId is required.</span>
+                    <span ng-show="register.emailid.$error.email">** Invalid Email address.</span>
+                </span>
+
+
+                <div class="right">
+                    <input type=reset value="Cancel" class="btn00 graybtn">
+                    <input type=submit value="Register" ng-disabled="register.$invalid" class="btn00">
+                    <div class="alert alert-danger" ng-show="errorMsg">
+                        &nbsp;&nbsp;{{errorMsg}}
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        var app = angular.module('postRegister', []);
+        app.controller('PostController', function ($scope, $http) {
+            this.postForm = function () {
+                var encodedString = 'username=' +
+                    encodeURIComponent(this.inputData.username) +
+                    '&password=' +
+                    encodeURIComponent(this.inputData.password) +
+                    '&emailid=' +
+                    encodeURIComponent(this.inputData.emailid);
+                $http({
+                        method: 'POST',
+                        url: 'jsp/useradd.jsp',
+                        data: encodedString,
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                    .then(function (response) {
+                        if (response.data.trim() === 'success') {
+                            $scope.errorMsg = "User registered Sucessfully !!. U can login now ";
+                        } else if (response.data.trim() === 'already') {
+                            $scope.errorMsg = "User is already registered !!";
+                        } else {
+                            $scope.errorMsg = "Server Issue try after some time";
+                        }
+                    })
+            }
+        });
+
+        app.directive("compareTo", function () {
+            return {
+                require: "ngModel",
+                scope: {
+                    confirmPassword: "=compareTo"
+                },
+                link: function (scope, element, attributes, modelVal) {
+                    modelVal.$validators.compareTo = function (val) {
+                        return (val == scope.confirmPassword);
+                    };
+                    scope.$watch("confirmPassword", function () {
+                        modelVal.$validate();
+                    });
+                }
+            };
+        });
+    </script>
+</body>
+
+</html>
