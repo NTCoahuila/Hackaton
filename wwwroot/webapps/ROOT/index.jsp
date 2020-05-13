@@ -71,9 +71,9 @@ try {
 		<br><a href="add_new_covid_area.jsp">Add New area</a>
 	<% 	} %>
 	</td>
-	<td><a href="covid_hospital.jsp">Covid Hosiptal </a> <br> <%= hospital_count %> Hospital Registered 
+	<td><a href="covid_hospital.jsp">Covid Hospital </a> <br> <%= hospital_count %> Hospital Registered 
 	<%  if (!uname.equals("nouser")) { %>
-		<br><a href="add_new_hospital.jsp">Add New Hosipital</a>
+		<br><a href="add_new_hospital.jsp">Add New Hospital</a>
 	<% 	} %>
 	</td>
 	<td><a href="covid_request.jsp">Emergency Request </a> <br> <%= request_count %> request Registered 
